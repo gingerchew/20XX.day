@@ -10,6 +10,4 @@ When I played the Megaman series, I would also see `201X` (twenty exteen) or `20
 
 ## But are we even going to make it to `20XX`??
 
-__*Looks around at everything happening around the world*__
-
-*...yes?*
+This site is dedicated to the future and to optimism! *Here's to **`21XX`**!*
