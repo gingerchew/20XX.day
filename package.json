@@ -1,0 +1,8 @@
+{
+  "name": "20xx.day",
+  "version": "1.0.0",
+  "description": "Is it 20XX yet??",
+  "main": "index.js",
+  "author": "Frankie <26461046+frankie-tech@users.noreply.github.com>",
+  "license": "MIT"
+}
