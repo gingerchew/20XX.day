@@ -4,5 +4,8 @@
   "description": "Is it 20XX yet??",
   "main": "index.js",
   "author": "Frankie <26461046+frankie-tech@users.noreply.github.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "serve":"npx serve"
+  }
 }
