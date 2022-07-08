@@ -53,14 +53,14 @@
             font-weight: 700;
         }
 
-        main:has(dialog[open]) :is(h1, h2) {
+        main:has( dialog[open]) :is(h1, h2) {
             display: none;
         }
     </style>
 </head>
 <body>
     <main>
-        <h1><span class="visually-hidden">Is it <code>20XX</code> yet? </span><span id="yn">Not Yet.</span></h1>
+        <h1>Is it <code>20XX</code> yet? <span id="yn">Not Yet.</span></h1>
         <h2><code><time id="t">{ Insert current time with edge function maybe }</time></code></h2>
         <details>
             <summary>What does <code>20XX</code> mean?</summary>
