@@ -30,9 +30,9 @@
             text-align: center;
             font-size: clamp(28px, 10vw, 90px);
         }
-        h2 {
+        .h2 {
             text-align: center;
-            font-size: clamp(20px, 7.5vw, 64px);
+            font-size: clamp(15px, 7.5vw, 48px);
             font-variant-numeric: tabular-nums;
         }
         details {
@@ -61,7 +61,7 @@
 <body>
     <main>
         <h1>Is it <code>20XX</code> yet? <span id="yn">Not Yet.</span></h1>
-        <h2><code><time id="t">{ Insert current time with edge function maybe }</time></code></h2>
+        <code class="h2">Time Left: <time id="t">{ Insert current time with edge function maybe }</time></code>
         <details>
             <summary>What does <code>20XX</code> mean?</summary>
             <p><code>20XX</code>, also pronounced as twenty exty ex, is a short hand seen in some video games to mean "sometime in the near future".</p>
@@ -70,20 +70,50 @@
         </details>
     </main>
     <script type="module">
-        const formatter = new Intl.DateTimeFormat('en-US', {
-            dateStyle: 'medium',
-            timeStyle: 'medium'
+        const formatter = new Intl.RelativeTimeFormat('en-US', {
+            style: 'narrow'
         });
         let xx = new Date('2100-01-01');
+        const getMin = n => Math.floor((n / 60) % 60);
+        const getHour = n => Math.floor((n / 60 / 60) % 24);
+        const getDay = n => Math.floor((n / 60 / 60 / 24) % 30);
+        const getMonth = n => Math.floor((n / 60 / 60 / 24 / 30) % 12);
+        const getYear = n => Math.floor(n / 60 / 60 / 24 / 30 / 12);
+        const convertToParts = ts => {
+            
+            const years = getYear(ts);
+            const months = getMonth(ts);
+            const days = getDay(ts);
+            const hours = getHour(ts);
+            const minutes = getMin(ts);
+            const seconds = Math.floor(ts) % 60;
+            return { 
+                years,
+                months,
+                days,
+                hours,
+                minutes,
+                seconds
+            }
+        }
+        let i = 0;
         function updateTime() {
             let now = new Date(Date.now());
             let left = (xx.getTime() - now.getTime()) / 1000
+            
             if (left <= 0) {
                 yn.textContent = 'It Is!!';
                 t.innerHTML = '';
                 return;
             }
-            t.innerHTML = `Seconds Left:<br/>${left.toFixed(0)}s`
+
+            const _parts = convertToParts(left);
+            const htmlParts = ['<br/>'];
+            for (let [unit, value] of Object.entries(_parts)) {
+                htmlParts.push(`<span>${value}&nbsp;${unit}</span>`);
+            }
+            
+            t.innerHTML = htmlParts.join(' ');
             requestAnimationFrame(updateTime);
         }
         requestAnimationFrame(updateTime);
