@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Is it 20XX Yet?</title>
+    <link rel="icon" href="https://fav.farm/💩" />
     <style>
         html {
             font-size: 24px;
@@ -17,6 +18,7 @@
             min-height: 100vh;
             margin: 0;
             background-color: #fffcf2;
+            gap: 2.5rem;
         }
         @media (prefers-color-scheme: dark) {
             html {
@@ -53,26 +55,34 @@
             font-weight: 700;
         }
 
+        time {
+            font-variant-numeric: tabular-nums;
+        }
+
         main:has( dialog[open]) :is(h1, h2) {
             display: none;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
         }
     </style>
 </head>
 <body>
     <main>
-        <h1>Is it <code>20XX</code> yet? <span id="yn">Not Yet.</span></h1>
+        <h1>Is it <code id="yrs">20XX</code><span id="yet"> yet?</span> <span id="yn">Not Yet.</span></h1>
         <code class="h2">Time Left: <time id="t">{ Insert current time with edge function maybe }</time></code>
         <details>
             <summary>What does <code>20XX</code> mean?</summary>
-            <p><code>20XX</code>, also pronounced as twenty exty ex, is a short hand seen in some video games to mean "sometime in the near future".</p>
-            <p>When I played the Megaman series, I would also see <code>201X</code> (twenty exteen) or <code>202X</code> (twenty twenty ex). But as each decade comes and goes, each version ends up becoming outdated. The fix? <code>20XX</code>.</p>
+            <p><code>20XX</code>, also pronounced as <i>twenty exty ex</i>, is a short hand seen in some video games to mean "sometime in the near future".</p>
+            <p>When I played the Megaman series, I would also see <code>201X</code> (<i>twenty exteen</i>) or <code>202X</code> (<i>twenty twenty ex</i>). But as each decade comes and goes, each version ends up becoming outdated. The fix? <code>20XX</code>.</p>
             <p>This site is dedicated to the future and to optimism! <b>Here's to <code>21XX</code>!</b></p>
         </details>
     </main>
-    <script type="module">
-        const formatter = new Intl.RelativeTimeFormat('en-US', {
-            style: 'narrow'
-        });
+    <footer>
+        <small>Made with <code>{emoji}</code> by <a href="https://gingerchew.link">ginger</a>. <a href="https://github.com/gingerchew/20XX.day">Github</a></small>
+    </footer>
+    <script>
         let xx = new Date('2100-01-01');
         const getMin = n => Math.floor((n / 60) % 60);
         const getHour = n => Math.floor((n / 60 / 60) % 24);
@@ -86,17 +96,15 @@
             const days = getDay(ts);
             const hours = getHour(ts);
             const minutes = getMin(ts);
-            const seconds = Math.floor(ts) % 60;
             return { 
                 years,
                 months,
                 days,
                 hours,
-                minutes,
-                seconds
+                minutes
             }
         }
-        let i = 0;
+        let content, ms, showMs = false;
         function updateTime() {
             let now = new Date(Date.now());
             let left = (xx.getTime() - now.getTime()) / 1000
@@ -111,12 +119,25 @@
             const htmlParts = ['<br/>'];
             for (let [unit, value] of Object.entries(_parts)) {
                 htmlParts.push(`<span>${value}&nbsp;${unit}</span>`);
+                if (unit === 'months') {
+                    htmlParts.push('<br/>');
+                }
             }
             
-            t.innerHTML = htmlParts.join(' ');
-            requestAnimationFrame(updateTime);
+            // t.innerHTML = htmlParts.join(' ');
+            content = htmlParts.join(' '),
+                ms = left + 'ms';
+
+            t.innerHTML = showMs ? ms : content;
         }
-        requestAnimationFrame(updateTime);
+        updateTime();
+        yrs.addEventListener('click', () => {
+            showMs = !showMs;
+            t.innerHTML = showMs ? ms : content;
+        }, true);
+        yet.addEventListener('click', () => {
+            updateTime();
+        })
     </script>
 </body>
 </html>
